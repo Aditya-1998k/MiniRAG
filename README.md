@@ -10,6 +10,9 @@ It demonstrates the complete RAG pipeline end-to-end using simple components:
 
 MiniRAG is perfect for anyone who wants to understand how RAG works internally without heavy frameworks or cloud dependencies.
 
+Using **Ollama** for clean architecture. It will help in running the model locally and we can use
+api endpoint for generator.
+
 ---
 
 ## ✨ Features
@@ -28,23 +31,30 @@ MiniRAG is perfect for anyone who wants to understand how RAG works internally w
 ```
 MiniRAG/
 │
-├── rag/
+├── core/
 │ ├── __init__.py
-│ ├── config.py # environment and performance settings
-│ ├── llm.py # loads the local LLM
-│ ├── embedder.py # embedding model
-│ ├── retriever.py # FAISS retrieval logic
-│ ├── generator.py # answer generation logic
+│ ├── config.py
+│ ├── embedder.py
+│ ├── retriever.py
+│ ├── generator.py
+|
+│ ├── pytorch_llm/
+│ ├── __init__.py
+│ ├── llm.py
+|
+│ ├── ollama/
+│ ├── __init__.py
+│ ├── ollama.py
 │
 ├── embeddings/
-│ ├── index.faiss # stored FAISS index
-│ ├── chunks.pkl # text chunks mapped to vectors
+│ ├── index.faiss
+│ ├── chunks.pkl
 │
 ├── data/
 │ ├── story.txt
 │
-├── ingest.py # builds FAISS index from text chunks
-├── rag_local.py # main script to query the RAG
+├── ingest.py
+├── main.py
 └── README.md
 ```
 
