@@ -1,12 +1,22 @@
 import os
-from rag.config import setup_environment
-from rag.llm import load_llm
-from rag.embedder import load_embedder
-from rag.retriever import load_retrieval_index, retrieve
-from rag.generator import generate_answer
+from core.config import setup_environment
+from pytorch_llm.llm import load_llm
+from core.embedder import load_embedder
+from core.retriever import load_retrieval_index, retrieve
 
 
 os.environ["TRANSFORMERS_VERBOSITY"] = "error"
+BACKEND = os.environ.get("MINIRAG_BACKEND", "pytorch")
+
+if BACKEND == "pytorch":
+    from pytorch_llm.llm import load_llm
+    from pytorch_llm.generator import generate_answer
+elif BACKEND == "ollama":
+    from ollama.ollama import load_ollama as load_llm
+    from ollama.ollama import generate_with_ollama as generate_answer
+else:
+    raise ValueError(f"Unknown backend: {BACKEND}")
+
 
 
 if __name__ == "__main__":
@@ -14,7 +24,7 @@ if __name__ == "__main__":
         breakpoint()
         setup_environment()
 
-        generator = load_llm()
+        model = load_llm()
         embedder = load_embedder()
         index, chunks = load_retrieval_index()
 
@@ -23,7 +33,7 @@ if __name__ == "__main__":
         context_chunks = retrieve(question, embedder, index, chunks)
         context_text = "\n\n".join(context_chunks)
 
-        answer = generate_answer(generator, question, context_text)
+        answer = generate_answer(model, question, context_text)
 
         print("\n--- ANSWER ---\n")
         print(answer)
