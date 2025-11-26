@@ -1,12 +1,17 @@
-
+import os
 from rag.config import setup_environment
 from rag.llm import load_llm
 from rag.embedder import load_embedder
 from rag.retriever import load_retrieval_index, retrieve
 from rag.generator import generate_answer
 
+
+os.environ["TRANSFORMERS_VERBOSITY"] = "error"
+
+
 if __name__ == "__main__":
     try:
+        breakpoint()
         setup_environment()
 
         generator = load_llm()
