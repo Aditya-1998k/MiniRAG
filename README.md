@@ -10,8 +10,10 @@ It demonstrates the complete RAG pipeline end-to-end using simple components:
 
 MiniRAG is perfect for anyone who wants to understand how RAG works internally without heavy frameworks or cloud dependencies.
 
-Using **Ollama** for clean architecture. It will help in running the model locally and we can use
+1. Using **Ollama** for clean architecture. It will help in running the model locally and we can use
 api endpoint for generator.
+
+2. Using **pytorch** with HF transformer to run model locally
 
 ---
 
@@ -55,6 +57,7 @@ MiniRAG/
 │
 ├── ingest.py
 ├── main.py
+├── .env
 └── README.md
 ```
 
@@ -66,6 +69,10 @@ MiniRAG/
 
 ```bash
 pip install -r requirements.txt
+```
+And set .env
+```
+MINIRAG_BACKEND=ollama  #pytorch for using HF transformer
 ```
 
 ### 2. Ingest data and build the FAISS index
@@ -81,6 +88,37 @@ python3 rag_local.py
 ### 4. Ask a question
 ```bash
 What were the three locations marked on Eldon Marr’s original map?
+```
+
+## Running Model with Ollama locally
+1. Install ollama
+```
+brew install ollama -macos
+sudo apt install ollama - linux
+```
+
+2. Start ollama service
+```
+ollama serve
+```
+
+3. Pull the model locally
+```
+ollama pull qwen2.5:0.5b
+```
+4. Run the model
+```
+ollama run qwen2.5:0.5b
+```
+5.  Try with simple question
+```
+OLLAMA_URL = "http://localhost:11434/api/generate"
+MODEL_NAME = "qwen2.5:0.5b"
+```
+6. Python integration
+```python
+OLLAMA_URL = "http://localhost:11434/api/generate"
+MODEL_NAME = "qwen2.5:0.5b"
 ```
 
 ## ⚙️ How It Works
