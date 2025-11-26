@@ -1,12 +1,16 @@
 import os
+from dotenv import load_dotenv
 from core.config import setup_environment
 from pytorch_llm.llm import load_llm
 from core.embedder import load_embedder
 from core.retriever import load_retrieval_index, retrieve
 
 
+load_dotenv()
+
 os.environ["TRANSFORMERS_VERBOSITY"] = "error"
 BACKEND = os.environ.get("MINIRAG_BACKEND", "pytorch")
+
 
 if BACKEND == "pytorch":
     from pytorch_llm.llm import load_llm
@@ -21,7 +25,6 @@ else:
 
 if __name__ == "__main__":
     try:
-        breakpoint()
         setup_environment()
 
         model = load_llm()
